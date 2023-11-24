@@ -2,3 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.formContainer{
+    @apply row-span-1 grid grid-cols-2 my-5  
+}
+
+.formInput{
+    @apply  border-2 my-2 h-10 w-full bg-stone-950 text-base rounded-lg border-white  transition duration-200 text-white px-3 focus:border-blue-500
+}
+
+.formLabel{
+    @apply relative w-full px-5 overflow-hidden 
+}
+
+.formSpan{
+    @apply text-xs sm:text-base rounded-lg text-white text-opacity-25 absolute left-6 top-3 px-3 transition duration-200 pt-1
+}

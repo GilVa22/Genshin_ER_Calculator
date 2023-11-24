@@ -8,128 +8,139 @@ interface Form {
     NCSE: number | null;
     NCDE: number | null;
     NCC: number | null;
+    Burst: number | null;
+
 }
 const Form = () => {
-    const [formData, set_FormData] = useState<Form>({ CSE: null, CDE: null, NCSE: null, NCDE: null, CC: null, NCC: null });
+    const [formData, set_FormData] = useState<Form>({ CSE: null, CDE: null, NCSE: null, NCDE: null, CC: null, NCC: null, Burst: null });
 
-    const handleChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
-        set_FormData({...formData, [e.target.name]: (e.target.value) } as unknown as Form);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        set_FormData({ ...formData, [e.target.name]: (e.target.value) } as unknown as Form);
     }
     const hasText = (job: number | null) => {
         if (job === null) return
-        console.log(job)
         if (job >= 0 && job.toString().length > 0)
-            return 'bg-black transform -translate-y-5 -translate-x-5 scale-75'
+            return 'bg-stone-950 transform -translate-y-5 -translate-x-5 scale-75 text-opacity-100'
         else
             return ''
     }
-    const handleSubmit = (e:  React.FormEvent<HTMLFormElement>) =>{
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        //set All null values to 0        
-        let sum = (formData.CSE || 0) *3 + (formData.CDE || 0) * 1 
-        + (formData.NCSE || 0) * 1.8 + (formData.NCDE || 0) *0.6 +
-        (formData.CC || 0) * 2 + (formData.NCC || 0) * 1.2;
-        window.alert(70/sum)
+        //set All null values to 0  
+        console.log((formData.CSE || 0) * 3)      
+        let sum = (formData.CSE || 0) * 3 + (formData.CDE || 0) * 1
+            + (formData.NCSE || 0) * 1.8 + (formData.NCDE || 0) * 0.6 +
+            (formData.CC || 0) * 2 + (formData.NCC || 0) * 1.2;
+
+        if(sum === 0) window.alert("You forgot to specify the particles");
+        else if (!formData.Burst) window.alert("You didn't specify the burst cost");
+        else window.alert((((formData.Burst || 0) / (sum || 1))*100).toFixed(2));
+
         console.log("submit", sum)
     }
     return (
         <div className='  bg-blend-darken   '>
-            <form className='p-5 flex flex-col justify-center align-middle items-center bg-stone-950 border-2 border-blue' onSubmit={handleSubmit}>
-                <label className="relative mx-auto w-9/12 overflow-hidden">
-                    <input
-                        type="number"
-                        id="CSE"
-                        name="CSE"
-                        className="my-2 h-10 w-full bg-black text-base rounded-lg border-white border-2 
-                        focus:border-4 focus:border-blue  focus:text-white transition duration-200 text-white px-3 bg-primary-orange"
-                        placeholder=""
-                        onChange={handleChange}
-                    />
-                    <span className={` text-xs sm:text-base longtxt rounded-lg text-white text-opacity-75 absolute left-0 top-3 px-3 
-        transition duration-200 input-text pt-1 ${hasText(formData.CSE)}`}>Caught Same Element</span>
-                </label>
+            <form className='p-5 grid grid-rows-4 justify-center align-middle items-center bg-stone-950 border-2 border-blue' onSubmit={handleSubmit}>
+                <div className='formContainer'>
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="CSE"
+                            name="CSE"
+                            className="formInput"
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={`formSpan  ${hasText(formData.CSE)}`}>Caught Same Element</span>
+                    </label>
+
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="NCSE"
+                            name="NCSE"
+                            className="formInput"
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={` formSpan ${hasText(formData.NCSE)}`}>Not Caught Same Element</span>
+                    </label>
+                </div>
+
+                {/*------------------------------------------------------------ */}
+                <div className='formContainer'>
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="CDE"
+                            name="CDE"
+                            className="formInput"
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={` formSpan ${hasText(formData.CDE)}`}>Caught Different Element</span>
+                    </label>
+
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="NCDE"
+                            name="NCDE"
+                            className="formInput"
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={`formSpan ${hasText(formData.NCDE)}`}>Not Caught Different Element</span>
+                    </label>
+
+                </div>
+
+                {/*------------------------------------------------------------ */}
+                <div className='formContainer'>
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="CC"
+                            name="CC"
+                            className="formInput"
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={` formSpan ${hasText(formData.CC)}`}>Caught Clear Particles</span>
+                    </label>
+
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="NCC"
+                            name="NCC"
+                            className="formInput"
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={` formSpan ${hasText(formData.NCC)}`}>Not Caught Clear Particles</span>
+                    </label>
+                </div>
 
                 {/*------------------------------------------------------------ */}
 
-                <label className="relative mx-auto w-9/12 overflow-hidden">
-                    <input
-                        type="number"
-                        id="CDE"
-                        name="CDE"
-                        className="my-2 h-10 w-full bg-black text-base rounded-lg border-white border-2 
-                        focus:border-4 focus:border-blue  focus:text-white transition duration-200 text-white px-3 bg-primary-orange"
-                        placeholder=""
-                        onChange={handleChange}
-                    />
-                    <span className={` text-xs sm:text-base longtxt rounded-lg text-white text-opacity-75 absolute left-0 top-3 px-3 
-        transition duration-200 input-text pt-1 ${hasText(formData.CDE)}`}>Caught Different Element</span>
-                </label>
+                <div className='formContainer'>
+                    <label className="formLabel">
+                        <input
+                            type="number"
+                            id="Burst"
+                            name="Burst"
+                            className="formInput focus-visible:border-blue-500 "
+                            placeholder=""
+                            onChange={handleChange}
+                        />
+                        <span className={` formSpan ${hasText(formData.Burst)} `}>Burst Cost</span>
+                    </label>
 
-                {/*------------------------------------------------------------ */}
-
-                <label className="relative mx-auto w-9/12 overflow-hidden">
-                    <input
-                        type="number"
-                        id="NCSE"
-                        name="NCSE"
-                        className="my-2 h-10 w-full bg-black text-base rounded-lg border-white border-2 
-                        focus:border-4 focus:border-blue  focus:text-white transition duration-200 text-white px-3 bg-primary-orange"
-                        placeholder=""
-                        onChange={handleChange}
-                    />
-                    <span className={` text-xs sm:text-base longtxt rounded-lg text-white text-opacity-75 absolute left-0 top-3 px-3 
-        transition duration-200 input-text pt-1 ${hasText(formData.NCSE)}`}>Not Caught Same Element</span>
-                </label>
-
-                {/*------------------------------------------------------------ */}
-
-                <label className="relative mx-auto w-9/12 overflow-hidden">
-                    <input
-                        type="number"
-                        id="NCDE"
-                        name="NCDE"
-                        className="my-2 h-10 w-full bg-black text-base rounded-lg border-white border-2 
-                        focus:border-4 focus:border-blue  focus:text-white transition duration-200 text-white px-3 bg-primary-orange"
-                        placeholder=""
-                        onChange={handleChange}
-                    />
-                    <span className={` text-xs sm:text-base longtxt rounded-lg text-white text-opacity-75 absolute left-0 top-3 px-3 
-        transition duration-200 input-text pt-1 ${hasText(formData.NCDE)}`}>Not Caught Different Element</span>
-                </label>
-
-                {/*------------------------------------------------------------ */}
-
-                <label className="relative mx-auto w-9/12 overflow-hidden">
-                    <input
-                        type="number"
-                        id="CC"
-                        name="CC"
-                        className="my-2 h-10 w-full bg-black text-base rounded-lg border-white border-2 
-                        focus:border-4 focus:border-blue  focus:text-white transition duration-200 text-white px-3 bg-primary-orange"
-                        placeholder=""
-                        onChange={handleChange}
-                    />
-                    <span className={` text-xs sm:text-base longtxt rounded-lg text-white text-opacity-75 absolute left-0 top-3 px-3 
-        transition duration-200 input-text pt-1 ${hasText(formData.CC)}`}>Caught Clear Particles</span>
-                </label>
-
-                {/*------------------------------------------------------------ */}
-
-                <label className="relative mx-auto w-9/12 overflow-hidden">
-                    <input
-                        type="number"
-                        id="NCC"
-                        name="NCC"
-                        className="my-2 h-10 w-full bg-black text-base rounded-lg border-white border-2 
-                        focus:border-4 focus:border-blue  focus:text-white transition duration-200 text-white px-3 bg-primary-orange"
-                        placeholder=""
-                        onChange={handleChange}
-                    />
-                    <span className={` text-xs sm:text-base longtxt rounded-lg text-white text-opacity-75 absolute left-0 top-3 px-3 
-        transition duration-200 input-text pt-1 ${hasText(formData.NCC)}`}>Not Caught Clear Particles</span>
-                </label>
-                <button type="submit" className="w-1/2 text-white hover:text-black border hover:border-black border-white bg-black hover:bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center">Calculate</button>
-
+                    <button type="submit"
+                        className="w-full text-white hover:text-black border bg-stone-950 border-white
+                hover:bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Calculate</button>
+                </div>
             </form>
         </div>
     )
